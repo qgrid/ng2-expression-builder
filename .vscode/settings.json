@@ -1,0 +1,5 @@
+{
+    "typescript.tsdk": "./node_modules/typescript/lib",
+    "prettier.singleQuote": true,
+    "html.format.wrapAttributes": "force-aligned"    
+}
