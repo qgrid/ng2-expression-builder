@@ -1,0 +1,9 @@
+<ng-template key="q-eb-button.tpl.html"
+             let-$expr>
+	<button mat-button
+	        class="q-grid-condition-builder-button"
+	        (click)="$expr.click && $expr.click($event)"
+	        [ngClass]="$expr.classes">
+		{{$expr.text}}
+	</button>
+</ng-template>
