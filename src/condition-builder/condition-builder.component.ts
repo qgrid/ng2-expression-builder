@@ -1,4 +1,4 @@
-import { Component, Optional, Output, EventEmitter, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, Optional, Output, EventEmitter, OnInit, ViewEncapsulation, Input, ElementRef } from '@angular/core';
 import { Command } from '../infrastructure/command';
 import { clone } from '../infrastructure/utility';
 import { ConditionBuilderService } from './condition-builder.service';
@@ -12,16 +12,18 @@ import { EbNodeComponent } from '../expression-builder/eb-node.component';
 import { TraverseService } from '../expression-builder/traverse.service';
 import { ConditionBuilderModel } from './condition-builder.model';
 import { AppError } from '../infrastructure/error';
+import { ThemeService } from '../theme/theme.service';
 
 @Component({
-	selector: 'q-grid-condition-builder',
+	selector: 'q-condition-builder',
 	templateUrl: './condition-builder.component.html',
 	styleUrls: ['../theme/material/condition-builder.component.scss']
 })
 export class ConditionBuilderComponent implements OnInit {
-	node: Node;
-	model: ConditionBuilderModel;
+	@Input() model: ConditionBuilderModel;
 	@Output() close = new EventEmitter<any>();
+
+	node: Node;
 
 	private traverse = new TraverseService();
 	private plan: INodeSchema;
@@ -106,7 +108,22 @@ export class ConditionBuilderComponent implements OnInit {
 		}
 	});
 
-	constructor(private nodeService: EbNodeService) {
+	constructor(
+		private element: ElementRef,
+		private nodeService: EbNodeService,
+		private theme: ThemeService) {
+	}
+
+	initTheme() {
+		const element = this.element.nativeElement;
+
+		this.theme.changed.subscribe(e => {
+			if (e) {
+				element.classList.remove(`q-grid-condition-builder-theme-${e.oldValue}`);
+			}
+
+			element.classList.add(`q-grid-condition-builder-theme-${e.newValue}`);
+		});
 	}
 
 	ngOnInit() {

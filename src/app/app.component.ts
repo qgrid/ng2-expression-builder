@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ConditionBuilderModel } from '../condition-builder/condition-builder.model';
 
 @Component({
   selector: 'app-root',
@@ -8,6 +9,7 @@ import { Component } from '@angular/core';
 export class AppComponent {
   title = 'app';
 
+  getValues = field => [field.title];
   fields = [
     {
       type: 'text',
@@ -35,4 +37,6 @@ export class AppComponent {
       title: 'Email'
     }
   ];
+
+  model = new ConditionBuilderModel(this.fields, this.getValues);
 }

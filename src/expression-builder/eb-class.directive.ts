@@ -4,11 +4,11 @@ import { evaluateFactory } from './digest/evaluate';
 import { EbNodeComponent } from './eb-node.component';
 
 @Directive({
-	selector: '[q-grid-eb-class]'
+	selector: '[q-eb-class]'
 })
 export class EbClassDirective implements OnInit, DoCheck {
-	@Input('q-grid-eb-class') klass: any;
-	@Input('q-grid-eb-class-model') model: any;
+	@Input('q-eb-class') klass: any;
+	@Input('q-eb-class-model') model: any;
 
 	private evaluate: (value: any) => any;
 	private oldClassList: Array<string> = [];

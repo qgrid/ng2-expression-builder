@@ -1,25 +1,25 @@
-<ul class="q-grid-eb-node"
-	[q-grid-eb-class]="model.attr('class')"
-	[ngClass]="{'q-grid-eb-active': service.current === model}"
+<ul class="q-eb-node"
+	[q-eb-class]="model.attr('class')"
+	[ngClass]="{'q-eb-active': service.current === model}"
 	(click)="select($event)">
-	<li class="q-grid-eb-line">
+	<li class="q-eb-line">
 		<ul>
 			<li *ngFor="let expr of model.line.expressions"
-			    class="q-grid-eb-expression">
-				<q-grid-eb-expression [model]="expr"
+			    class="q-eb-expression">
+				<q-eb-expression [model]="expr"
 				                      [node]="model"
 				                      [line]="model.line">
-				</q-grid-eb-expression>
+				</q-eb-expression>
 			</li>
 		</ul>
 	</li>
 
-	<li class="q-grid-eb-children">
+	<li class="q-eb-children">
 		<ul>
 			<li *ngFor="let child of model.children"
-			    class="q-grid-eb-child">
-				<q-grid-eb-node [model]="child">
-				</q-grid-eb-node>
+			    class="q-eb-child">
+				<q-eb-node [model]="child">
+				</q-eb-node>
 			</li>
 		</ul>
 	</li>
@@ -29,13 +29,13 @@
 			 let-$group
 			 let-$node="node"
 			 let-$line="line">
-	<ul class="q-grid-eb-group">
+	<ul class="q-group">
 		<li *ngFor="let expr of $group.expressions"
-		    class="q-grid-eb-expression">
-			<q-grid-eb-expression [model]="expr"
+		    class="q-eb-expression">
+			<q-eb-expression [model]="expr"
 			                      [node]="$node"
 			                      [line]="$line">
-			</q-grid-eb-expression>
+			</q-eb-expression>
 		</li>
 	</ul>
 </ng-template>

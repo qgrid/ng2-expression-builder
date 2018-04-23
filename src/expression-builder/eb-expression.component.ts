@@ -4,7 +4,7 @@ import { Node } from './model/node';
 import { Watcher } from './digest/watch';
 
 @Component({
-	selector: 'q-grid-eb-expression',
+	selector: 'q-eb-expression',
 	templateUrl: './eb-expression.component.html'
 })
 export class EbExpressionComponent implements OnInit, DoCheck {

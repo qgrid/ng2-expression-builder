@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { ConditionBuilderModule } from '../condition-builder/condition-builder.module';
+import { ThemeModule } from '../theme/material/theme.module';
 
 @NgModule({
   declarations: [
@@ -11,7 +12,8 @@ import { ConditionBuilderModule } from '../condition-builder/condition-builder.m
   ],
   imports: [
     BrowserModule,
-    ConditionBuilderModule
+    ConditionBuilderModule,
+    ThemeModule
   ],
   providers: [],
   bootstrap: [AppComponent]
