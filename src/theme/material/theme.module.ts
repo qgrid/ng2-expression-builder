@@ -22,18 +22,21 @@ import {
 	MatAutocompleteModule,
 	MatToolbarModule
 } from '@angular/material';
+import { TemplateLinkService } from '../../template/template-link.service';
+import { TemplateCacheService } from '../../template/template-cache.service';
 
 @NgModule({
 	declarations: [
 		ThemeComponent
 	],
 	exports: [
-		ThemeComponent
+		ThemeComponent,
+		TemplateModule
 	],
 	imports: [
 		CommonModule,
-		FormsModule,
 		TemplateModule,
+		FormsModule,
 		MatIconModule,
 		MatButtonModule,
 		MatSelectModule,
@@ -45,6 +48,10 @@ import {
 		MatToolbarModule,
 	],
 	providers: [
+		ThemeService,
+		TemplateService,
+		TemplateLinkService,
+		TemplateCacheService
 	],
 	entryComponents: [
 		ThemeComponent

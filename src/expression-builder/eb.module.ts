@@ -14,6 +14,7 @@ import { EbNodeService } from './eb-node.service';
 	],
 	exports: [
 		EbNodeComponent,
+		EbExpressionComponent,
 		EbClassDirective
 	],
 	declarations: [
@@ -26,5 +27,5 @@ import { EbNodeService } from './eb-node.service';
 		EbNodeService
 	]
 })
-export class ExpressionBuilderModule {
+export class EbModule {
 }

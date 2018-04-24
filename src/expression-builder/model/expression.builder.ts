@@ -3,12 +3,11 @@ import { isFunction } from '../../infrastructure/utility';
 import { Expression, GroupExpression } from './expression';
 import { nodeSchema, INodeSchema } from './node.schema';
 import { GroupSchema } from './group.schema';
-import * as utility from '../utility';
+import { defaults } from '../../infrastructure/utility';
 import * as patch from '../patch';
 import { Node } from './node';
 import { Line } from './line';
 import { IStatement, EmptyStatement } from './statement';
-
 
 export class ExpressionBuilder {
 	constructor(private settings) {
@@ -33,7 +32,7 @@ export class ExpressionBuilder {
 
 					const build = function (node: Node, line: Line) {
 						const expression =
-							utility.defaults<Expression>(
+							defaults<Expression>(
 								sampleExpression,
 								statement.defaults,
 								settings.defaults
@@ -94,7 +93,7 @@ export class ExpressionBuilder {
 
 					const build = function (node, line, expressionGroup) {
 						const expression =
-							utility.defaults<Expression>(
+							defaults<Expression>(
 								sampleExpression,
 								statement.defaults,
 								settings.defaults

@@ -2,7 +2,7 @@ import { Node } from './model/node';
 import { Line } from './model/line';
 import { GroupExpression } from './model/expression';
 import { INodeSchema } from './model/node.schema';
-import { override, indexOf } from './utility';
+import { override } from '../infrastructure/utility';
 
 export declare interface ISerializationNode {
 	id: string;
@@ -157,7 +157,7 @@ class Deserializer {
 		let index;
 		for (let i = 0; i < length; i++) {
 			const dataExp = dataExpressions[i];
-			index = indexOf(group.expressions, expr => expr.id === dataExp.id);
+			index = group.expressions.findIndex(expr => expr.id === dataExp.id);
 			override(group.expressions[index], dataExp);
 		}
 

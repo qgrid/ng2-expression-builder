@@ -1,13 +1,14 @@
 import { NgModule } from '@angular/core';
-import { TemplateModule } from '../template/template.module';
 import { ConditionBuilderComponent } from './condition-builder.component';
 import { ConditionBuilderPipe } from './condition-builder.pipe';
-import { ExpressionBuilderModule } from '../expression-builder/expression-builder.module';
+import { EbModule } from '../expression-builder/eb.module';
+import { ThemeModule } from '../theme/material/theme.module';
+import { TemplateModule } from '../template/template.module';
 
 @NgModule({
 	imports: [
-		TemplateModule,
-		ExpressionBuilderModule
+		ThemeModule,
+		EbModule
 	],
 	exports: [
 		ConditionBuilderComponent,
