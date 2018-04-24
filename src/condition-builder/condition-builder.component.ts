@@ -16,8 +16,7 @@ import { ThemeService } from '../theme/theme.service';
 
 @Component({
 	selector: 'q-condition-builder',
-	templateUrl: './condition-builder.component.html',
-	styleUrls: ['../theme/material/condition-builder.component.scss']
+	templateUrl: './condition-builder.component.html'	
 })
 export class ConditionBuilderComponent implements OnInit {
 	@Input() model: ConditionBuilderModel;

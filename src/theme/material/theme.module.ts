@@ -26,10 +26,12 @@ import { TemplateLinkService } from '../../template/template-link.service';
 import { TemplateCacheService } from '../../template/template-cache.service';
 import { ConditionBuilderModule } from '../../condition-builder/condition-builder.module';
 import { EbModule } from '../../expression-builder/eb.module';
+import { ConditionBuilderTplComponent } from './condition-builder-tpl.component';
 
 @NgModule({
 	declarations: [
-		ThemeComponent
+		ThemeComponent,
+		ConditionBuilderTplComponent
 	],
 	exports: [
 		ThemeComponent		
