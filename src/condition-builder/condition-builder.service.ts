@@ -26,31 +26,31 @@ export class ConditionBuilderService {
 		const statements = [
 			{
 				type: 'label',
-				templateKey: 'plugin-eb-label.tpl.html'
+				templateKey: 'eb-label-tpl.component.html'
 			},
 			{
 				type: 'input',
-				templateKey: 'plugin-eb-input.tpl.html'
+				templateKey: 'eb-input-tpl.component.html'
 			},
 			{
 				type: 'select',
-				templateKey: 'plugin-eb-select.tpl.html'
+				templateKey: 'eb-select-tpl.component.html'
 			},
 			{
 				type: 'button',
-				templateKey: 'plugin-eb-button.tpl.html'
+				templateKey: 'eb-button-tpl.component.html'
 			},
 			{
 				type: 'iconButton',
-				templateKey: 'plugin-eb-icon-button.tpl.html'
+				templateKey: 'eb-icon-button-tpl.component.html'
 			},
 			{
 				type: 'autocomplete',
-				templateKey: 'plugin-eb-autocomplete.tpl.html'
+				templateKey: 'eb-autocomplete-tpl.component.html'
 			},
 			{
 				type: 'multiselect',
-				templateKey: 'plugin-eb-multiselect.tpl.html'
+				templateKey: 'eb-multiselect-tpl.component.html'
 			}
 		];
 

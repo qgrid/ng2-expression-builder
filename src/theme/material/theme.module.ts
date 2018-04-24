@@ -9,7 +9,7 @@ import { FormsModule } from '@angular/forms';
 import { ThemeComponent } from './theme.component';
 import { TemplateModule } from '../../template/template.module';
 import { TemplateService } from '../../template/template.service';
-import {ThemeService} from '../theme.service';
+import { ThemeService } from '../theme.service';
 import {
 	MatIconModule,
 	MatButtonModule,
@@ -27,14 +27,28 @@ import { TemplateCacheService } from '../../template/template-cache.service';
 import { ConditionBuilderModule } from '../../condition-builder/condition-builder.module';
 import { EbModule } from '../../expression-builder/eb.module';
 import { ConditionBuilderTplComponent } from './condition-builder-tpl.component';
+import { EbAutocompleteTplComponent } from './eb-autocomplete-tpl.component';
+import { EbButtonTplComponent } from './eb-button-tpl.component';
+import { EbIconButtonTplComponent } from './eb-icon-button-tpl.component';
+import { EbInputTplComponent } from './eb-input-tpl.component';
+import { EbLabelTplComponent } from './eb-label-tpl.component';
+import { EbMultiselectTplComponent } from './eb-multiselect-tpl.component.1';
+import { EbSelectTplComponent } from './eb-select-tpl.component';
 
 @NgModule({
 	declarations: [
 		ThemeComponent,
-		ConditionBuilderTplComponent
+		ConditionBuilderTplComponent,
+		EbAutocompleteTplComponent,
+		EbButtonTplComponent,
+		EbIconButtonTplComponent,
+		EbInputTplComponent,
+		EbLabelTplComponent,
+		EbMultiselectTplComponent,
+		EbSelectTplComponent
 	],
 	exports: [
-		ThemeComponent		
+		ThemeComponent
 	],
 	imports: [
 		CommonModule,
