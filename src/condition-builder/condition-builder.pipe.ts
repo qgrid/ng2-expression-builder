@@ -6,6 +6,7 @@ import { convert } from './schema/converter';
 import { Validator } from './schema/validator';
 import { IConditionBuilderModel } from './condition-builder.model';
 import * as fieldService from '../infrastructure/field.service';
+import { Guard } from '../infrastructure/guard';
 
 @Pipe({
 	name: 'qConditionBuilderMarkup',
@@ -15,6 +16,8 @@ export class ConditionBuilderPipe implements PipeTransform {
 	visitor: MarkupVisitor;
 
 	transform(value: any, model: IConditionBuilderModel): any {
+		Guard.notNull(model, 'model');
+
 		const node = value as Node;
 		if (node) {
 			if (!this.visitor) {

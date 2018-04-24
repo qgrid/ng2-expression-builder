@@ -4,7 +4,7 @@ export class AppError extends Error {
 	constructor(name, message) {
 		super(message);
 		this.name = this.constructor.name;
-		this.message = `qgrid.${name}: ${message}`;
+		this.message = `q-expression-builder.${name}: ${message}`;
 		const ErrorCons = Error as any;
 		if (isFunction(ErrorCons.captureStackTrace)) {
 			ErrorCons.captureStackTrace(this, this.constructor);

@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { ConditionBuilderComponent } from './condition-builder.component';
 import { ConditionBuilderPipe } from './condition-builder.pipe';
 import { EbModule } from '../expression-builder/eb.module';
@@ -7,7 +8,8 @@ import { TemplateModule } from '../template/template.module';
 
 @NgModule({
 	imports: [
-		ThemeModule,
+		CommonModule,
+		TemplateModule,
 		EbModule
 	],
 	exports: [

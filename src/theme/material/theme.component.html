@@ -1,0 +1,31 @@
+<ng-template key="q-condition-builder.component.tpl.html"
+             let-$builder>
+    <div class="q-condition-builder">
+        <div class="q-condition-builder-toolbar">
+            <mat-toolbar>
+                <button mat-button
+                        (click)="$builder.addGroup.execute()"
+                        [disabled]="!$builder.addGroup.canExecute()">
+                    <mat-icon>playlist_add</mat-icon>Add Group
+                </button>
+                <button mat-button
+                        (click)="$builder.addRule.execute()"
+                        [disabled]="!$builder.addRule.canExecute()">
+                    <mat-icon>add</mat-icon>Add Rule
+                </button>
+                <button mat-button
+                        (click)="$builder.remove.execute()"
+                        [disabled]="!$builder.remove.canExecute()">
+                    <mat-icon>delete_forever</mat-icon>Remove
+                </button>
+            </mat-toolbar>
+        </div>
+        <div class="q-condition-builder-expression">
+            <q-eb-node [model]="$builder.node">
+            </q-eb-node>
+        </div>
+        <div class="q-condition-builder-expression-line"
+             [innerHTML]="$builder.node | qConditionBuilderMarkup: $builder.model">
+        </div>
+    </div>
+</ng-template>

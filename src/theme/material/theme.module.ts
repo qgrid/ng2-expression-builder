@@ -24,18 +24,21 @@ import {
 } from '@angular/material';
 import { TemplateLinkService } from '../../template/template-link.service';
 import { TemplateCacheService } from '../../template/template-cache.service';
+import { ConditionBuilderModule } from '../../condition-builder/condition-builder.module';
+import { EbModule } from '../../expression-builder/eb.module';
 
 @NgModule({
 	declarations: [
 		ThemeComponent
 	],
 	exports: [
-		ThemeComponent,
-		TemplateModule
+		ThemeComponent		
 	],
 	imports: [
 		CommonModule,
 		TemplateModule,
+		EbModule,
+		ConditionBuilderModule,
 		FormsModule,
 		MatIconModule,
 		MatButtonModule,

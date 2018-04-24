@@ -24,6 +24,8 @@ export class ConditionBuilderComponent implements OnInit {
 	@Output() close = new EventEmitter<any>();
 
 	node: Node;
+	themeComponent: any;
+	context = { $implicit: this };
 
 	private traverse = new TraverseService();
 	private plan: INodeSchema;
@@ -104,7 +106,6 @@ export class ConditionBuilderComponent implements OnInit {
 			root.clear();
 
 			this.nodeService.current = this.node.children[0];
-
 		}
 	});
 
@@ -112,17 +113,28 @@ export class ConditionBuilderComponent implements OnInit {
 		private element: ElementRef,
 		private nodeService: EbNodeService,
 		private theme: ThemeService) {
+
+		this.initTheme();
 	}
 
 	initTheme() {
+		const theme = this.theme;
+		if (!theme.component) {
+			throw new AppError(
+				'consition-builder.component',
+				'Ensure that condition-builder theme module was included'
+			);
+		}
+
+		this.themeComponent = theme.component;
 		const element = this.element.nativeElement;
 
 		this.theme.changed.subscribe(e => {
 			if (e) {
-				element.classList.remove(`q-grid-condition-builder-theme-${e.oldValue}`);
+				element.classList.remove(`q-condition-builder-theme-${e.oldValue}`);
 			}
 
-			element.classList.add(`q-grid-condition-builder-theme-${e.newValue}`);
+			element.classList.add(`q-condition-builder-theme-${e.newValue}`);
 		});
 	}
 
