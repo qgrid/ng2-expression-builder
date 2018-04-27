@@ -24,7 +24,7 @@ export class ConditionBuilderComponent implements OnInit {
 
 	node: Node;
 	themeComponent: any;
-	context = { $implicit: this };
+	$implicit = this;
 
 	private traverse = new TraverseService();
 	private plan: INodeSchema;

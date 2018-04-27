@@ -52,18 +52,9 @@ return Promise.resolve()
   .then(() => console.log('inline: succeeded'))
   // Compile to ES2015.
   .then(() => console.log('ngc: tsconfig.es2015.json'))
-  .then(() => process.chdir(tscFolder))
   .then(() => ngc(['--project', 'tsconfig.es2015.json']))
   .then(code => code === 0 ? Promise.resolve() : Promise.reject())
-  .then(() => process.chdir(rootFolder))
   .then(() => console.log('ngc es2015: succeeded'))
-  // Compile to ES5.
-  .then(() => console.log('ngc: tsconfig.es5.json'))
-  .then(() => process.chdir(tscFolder))
-  .then(() => ngc(['--project', 'tsconfig.es5.json']))
-  .then(code => code === 0 ? Promise.resolve() : Promise.reject())
-  .then(() => process.chdir(rootFolder))
-  .then(() => console.log('ngc: succeeded'))
   // Copy typings and metadata to `dist/` folder.
   .then(() => console.log(`copy metadata: ${distFolder}`))
   .then(() => relativeCopy('**/*.d.ts', tempFolder, distFolder))
@@ -73,8 +64,7 @@ return Promise.resolve()
   // Bundle lib.
   .then(() => console.log(`bundle: ${libName}`))
   .then(() => {
-    const es5Entry = path.join(es5Folder, 'out-tsc', `index.js`);
-    const es2015Entry = path.join(es2015Folder, 'out-tsc', `${libName}.js`);
+    const es2015Entry = path.join(es2015Folder, `${libName}.js`);
     const rollupBaseConfig = {
       output: {
         name: camelCase(libName),
@@ -125,16 +115,13 @@ return Promise.resolve()
           module: true,
           main: true,
           browser: true
-        }),
-        // alias({
-        //   'ng2-': path.join(tempFolder, '/core/'),
-        // })
+        })
       ]
     };
 
     // UMD bundle.
     const umdConfig = Object.assign({}, rollupBaseConfig, {
-      input: es5Entry,
+      input: es2015Entry,
       output: Object.assign({}, rollupBaseConfig.output, {
         file: path.join(distFolder, `bundles`, `${libName}.umd.js`),
         format: 'umd'
@@ -143,7 +130,7 @@ return Promise.resolve()
 
     // Minified UMD bundle.
     const minifiedUmdConfig = Object.assign({}, rollupBaseConfig, {
-      input: es5Entry,
+      input: es2015Entry,
       output: Object.assign({}, rollupBaseConfig.output, {
         file: path.join(distFolder, `bundles`, `${libName}.umd.min.js`),
         format: 'umd'
@@ -153,7 +140,7 @@ return Promise.resolve()
 
     // ESM+ES5 flat module bundle.
     const fesm5config = Object.assign({}, rollupBaseConfig, {
-      input: es5Entry,
+      input: es2015Entry,
       output: Object.assign({}, rollupBaseConfig.output, {
         file: path.join(distFolder, `bundles`, `${libName}.es5.js`),
         format: 'es'
@@ -169,14 +156,14 @@ return Promise.resolve()
       })
     });
 
-    const allBundles = [
+    const bundles = [
       fesm2015config,
       fesm5config,
       umdConfig,
       minifiedUmdConfig
     ].map(cfg => rollup.rollup(cfg).then(bundle => bundle.write(cfg.output)));
 
-    return Promise.all(allBundles);
+    return Promise.all(bundles);
   })
   .then(() => console.log('bundle: successed'))
   // Copy package files
