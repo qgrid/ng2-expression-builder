@@ -19,7 +19,7 @@ const rootFolder = path.join(__dirname);
 const tscFolder = path.join(rootFolder, 'out-tsc');
 const srcFolder = path.join(rootFolder, 'src');
 const distFolder = path.join(rootFolder, 'dist');
-const tempFolder = path.join(tscFolder, 'lib');
+const tempFolder = tscFolder; // path.join(tscFolder, 'lib');
 const themeFolder = tempFolder;
 const es5Folder = path.join(tscFolder, 'es5');
 const es2015Folder = path.join(tscFolder, 'es2015');
@@ -39,7 +39,7 @@ return Promise.resolve()
           if (err) {
             reject(err);
           } else {
-            fs.writeFile(filePath.replace('.scss', '.css'), result.css);
+            fs.writeFileSync(filePath.replace('.scss', '.css'), result.css);
             resolve(result);
           }
         });
@@ -52,13 +52,17 @@ return Promise.resolve()
   .then(() => console.log('inline: succeeded'))
   // Compile to ES2015.
   .then(() => console.log('ngc: tsconfig.es2015.json'))
+  .then(() => process.chdir(tscFolder))
   .then(() => ngc(['--project', 'tsconfig.es2015.json']))
   .then(code => code === 0 ? Promise.resolve() : Promise.reject())
+  .then(() => process.chdir(rootFolder))
   .then(() => console.log('ngc es2015: succeeded'))
   // Compile to ES5.
   .then(() => console.log('ngc: tsconfig.es5.json'))
+  .then(() => process.chdir(tscFolder))
   .then(() => ngc(['--project', 'tsconfig.es5.json']))
   .then(code => code === 0 ? Promise.resolve() : Promise.reject())
+  .then(() => process.chdir(rootFolder))
   .then(() => console.log('ngc: succeeded'))
   // Copy typings and metadata to `dist/` folder.
   .then(() => console.log(`copy metadata: ${distFolder}`))
@@ -69,8 +73,8 @@ return Promise.resolve()
   // Bundle lib.
   .then(() => console.log(`bundle: ${libName}`))
   .then(() => {
-    const es5Entry = path.join(es5Folder, `${libName}.js`);
-    const es2015Entry = path.join(es2015Folder, `${libName}.js`);
+    const es5Entry = path.join(es5Folder, 'out-tsc', `index.js`);
+    const es2015Entry = path.join(es2015Folder, 'out-tsc', `${libName}.js`);
     const rollupBaseConfig = {
       output: {
         name: camelCase(libName),
@@ -191,15 +195,20 @@ return Promise.resolve()
 function relativeCopy(fileGlob, from, to) {
   return new Promise((resolve, reject) => {
     glob(fileGlob, { cwd: from, nodir: true }, (err, files) => {
-      if (err) reject(err);
+      if (err) {
+        reject(err);
+      }
+
       files.forEach(file => {
         const origin = path.join(from, file);
         const dest = path.join(to, file);
         const data = fs.readFileSync(origin, 'utf-8');
         makeFolderTree(path.dirname(dest));
         fs.writeFileSync(dest, data);
-        resolve();
-      })
+        console.log(`copy: ${file}`);
+      });
+
+      resolve();
     })
   });
 }

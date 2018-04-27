@@ -1,47 +1,27 @@
-import {AppError} from  './error';
-import {isUndefined, isFunction} from './utility';
+import { AppError } from './error';
+import { isUndefined, isFunction } from './utility';
 
 export class Guard {
-	/**
-	 * If value is undefined exception will be thrown
-	 * @param {any} value - Value to check
-	 * @param {string} name - Argument name
-	 */
-	static notUndefined(value, name) {
+	static notUndefined(value, name: string) {
 		if (isUndefined(value)) {
 			throw new AppError('guard.notUndefined', name);
 		}
 	}
 
 
-	/**
-	 * If value is null or undefined exception will be thrown
-	 * @param {any} value - Value to check
-	 * @param {string} name - Argument name
-	 */
-	static notNull(value, name) {
+	static notNull(value, name: string) {
 		if (value === null || isUndefined(value)) {
 			throw new AppError('guard.notNull', name);
 		}
 	}
 
-	/**
-	 * If value is null or undefined or empty exception will be thrown
-	 * @param {any} value - Value to check
-	 * @param {string} name - Argument name
-	 */
-	static notNullOrEmpty(value, name) {
+	static notNullOrEmpty(value, name: string) {
 		if (value === null || isUndefined(value) || value === '') {
 			throw new AppError('guard.notNullOrEmpty', name);
 		}
 	}
 
-	/**
-	 * If value is not a function exception will be thrown
-	 * @param {any} value - Value to check
-	 * @param {string} name - Argument name
-	 */
-	static invokable(value, name) {
+	static invokable(value, name: string) {
 		if (!isFunction(value)) {
 			throw new AppError('guard.invokable', name);
 		}
