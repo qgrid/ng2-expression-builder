@@ -11,7 +11,8 @@ const sourcemaps = require('rollup-plugin-sourcemaps');
 const nodeResolve = require('rollup-plugin-node-resolve');
 const commonjs = require('rollup-plugin-commonjs');
 const alias = require('rollup-plugin-alias');
-const inlineResources = require('./build.inline');
+const sass = require('npm-sass');
+const inlineStyles = require('./build.inline');
 
 const libName = require('./package.json').name;
 const rootFolder = path.join(__dirname);
@@ -19,6 +20,7 @@ const tscFolder = path.join(rootFolder, 'out-tsc');
 const srcFolder = path.join(rootFolder, 'src');
 const distFolder = path.join(rootFolder, 'dist');
 const tempFolder = path.join(tscFolder, 'lib');
+const themeFolder = tempFolder;
 const es5Folder = path.join(tscFolder, 'es5');
 const es2015Folder = path.join(tscFolder, 'es2015');
 
@@ -27,8 +29,26 @@ return Promise.resolve()
   .then(() => console.log(`copy: ${srcFolder}`))
   .then(() => relativeCopy(`**/*`, srcFolder, tempFolder))
   .then(() => console.log(`copy: succeeded`))
+  .then(() => console.log(`scss: ${themeFolder}`))
+  .then(() => {
+    const files = glob.sync('**/*.scss', { cwd: themeFolder });
+    return Promise.all(files.map(name =>
+      new Promise((resolve, reject) => {
+        const filePath = path.join(themeFolder, name);
+        sass(filePath, (err, result) => {
+          if (err) {
+            reject(err);
+          } else {
+            fs.writeFile(filePath.replace('.scss', '.css'), result.css);
+            resolve(result);
+          }
+        });
+      })
+    ))
+  })
+  .then(() => console.log(`scss: success`))
   .then(() => console.log(`inline: ${tempFolder}`))
-  .then(() => inlineResources(tempFolder))
+  .then(() => inlineStyles(tempFolder))
   .then(() => console.log('inline: succeeded'))
   // Compile to ES2015.
   .then(() => console.log('ngc: tsconfig.es2015.json'))
