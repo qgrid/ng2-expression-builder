@@ -68,8 +68,8 @@ return Promise.resolve()
   // Bundle lib.
   .then(() => console.log(`bundle: ${libName}`))
   .then(() => {
-    const es2015Entry = path.join(es2015Folder, `${libName}.js`);
-    const es5Entry = path.join(es5Folder, `${libName}.js`);
+    const es2015Entry = path.join(es2015Folder, `index.js`);
+    const es5Entry = path.join(es5Folder, `index.js`);
     const rollupBaseConfig = {
       output: {
         name: camelCase(libName),
