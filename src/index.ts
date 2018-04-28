@@ -1,7 +1,7 @@
 import { ConditionBuilderModule } from './condition-builder/condition-builder.module';
-import { ThemeModule } from './theme/material/theme.module';
+import { ConditionBuilderModel } from './condition-builder/condition-builder.model';
 
 export {
     ConditionBuilderModule,
-    ThemeModule
+    ConditionBuilderModel
 };

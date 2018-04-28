@@ -1,0 +1,30 @@
+{
+  "deprecated": false,
+  "description": "Angular Expression builder",
+  "es2015": "./bundles/ng2-expression-builder.js",
+  "homepage": "https://github.com/qgrid/ng2-expression-builder",
+  "keywords": [
+    "angular",
+    "expression",
+    "expression builder",
+    "query",
+    "query builder",
+    "condition builder"
+  ],
+  "license": "MIT",
+  "main": "./bundles/ng2-expression-builder.umd.js",
+  "module": "./bundles/ng2-expression-builder.es5.js",
+  "name": "ng2-expression-builder",
+  "peerDependencies": {
+    "@angular/common": "^5.2.10",
+    "@angular/core": "^5.2.10",
+    "@angular/cdk": "^5.2.5",
+    "@angular/material": "~5.2.5"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/qgrid/ng2-expression-builder.git"
+  },
+  "typings": "./index.d.ts",
+  "version": "5.0.0"
+}

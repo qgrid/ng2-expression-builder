@@ -1,6 +1,6 @@
 {
   "name": "ng2-expression-builder",
-  "version": "0.0.0",
+  "version": "5.0.0",
   "license": "MIT",
   "scripts": {
     "ng": "ng",
