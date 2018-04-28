@@ -3,7 +3,7 @@ import { Command } from '../infrastructure/command';
 import { clone } from '../infrastructure/utility';
 import { ConditionBuilderService } from './condition-builder.service';
 import { WhereSchema } from './schema/where.schema';
-import { convert } from './schema/converter';
+import { visit as convert } from './schema/converter';
 import { SerializationService } from '../expression-builder/serialization.service';
 import { INodeSchema } from '../expression-builder/model/node.schema';
 import { Node } from '../expression-builder/model/node';
@@ -16,7 +16,7 @@ import { ThemeService } from '../theme/theme.service';
 
 @Component({
 	selector: 'q-condition-builder',
-	templateUrl: './condition-builder.component.html'	
+	templateUrl: './condition-builder.component.html'
 })
 export class ConditionBuilderComponent implements OnInit {
 	@Input() model: ConditionBuilderModel;

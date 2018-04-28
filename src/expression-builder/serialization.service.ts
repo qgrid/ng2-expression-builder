@@ -6,7 +6,7 @@ import { override } from '../infrastructure/utility';
 
 export declare interface ISerializationNode {
 	id: string;
-	attributes: Object;
+	attributes: { [key: string]: any };
 	children: ISerializationNode[];
 	line: ISerializationGroup[];
 }

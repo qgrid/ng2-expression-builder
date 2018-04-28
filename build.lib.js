@@ -57,7 +57,6 @@ return Promise.resolve()
   .then(() => console.log('ngc es2015: succeeded'))
   // Copy typings and metadata to `dist/` folder.
   .then(() => console.log(`copy metadata: ${distFolder}`))
-  .then(() => relativeCopy('**/*.d.ts', tempFolder, distFolder))
   .then(() => relativeCopy('**/*.d.ts', es2015Folder, distFolder))
   .then(() => relativeCopy('**/*.metadata.json', es2015Folder, distFolder))
   .then(() => console.log('copy metadata: succeeded'))

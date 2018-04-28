@@ -2,7 +2,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { Node } from '../expression-builder/model/node';
 import { MarkupVisitor } from './schema/markup.visitor';
 import { SerializationService } from '../expression-builder/serialization.service';
-import { convert } from './schema/converter';
+import { visit as convert } from './schema/converter';
 import { Validator } from './schema/validator';
 import { IConditionBuilderModel } from './condition-builder.model';
 import * as fieldService from '../infrastructure/field.service';

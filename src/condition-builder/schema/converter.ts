@@ -1,15 +1,15 @@
 import { AppError } from '../../infrastructure/error';
 import { cloneDeep } from '../../infrastructure/utility';
+import { ISerializationNode, ISerializationGroup, ISerializationExpression } from '../../expression-builder/serialization.service';
+import { IExpression } from './expression';
 import { camelCaseMapping as camelCase } from './operator';
 
-export const convert = visit;
-
-function visit(item) {
-	switch (item.id) {
+export function visit(node: ISerializationNode): IExpression {
+	switch (node.id) {
 		case '#root':
-			return visit(item.children[0]);
+			return visit(node.children[0]);
 		case '#logical':
-			const group = visitGroup(item);
+			const group = visitGroup(node);
 			if (group) {
 				if (!(group.left || group.right)) {
 					return null;
@@ -18,13 +18,13 @@ function visit(item) {
 
 			return group;
 		case '#condition':
-			return visitCondition(item);
+			return visitCondition(node);
 		default:
-			throw new AppError('converter', `Invalid kind ${item.kind}`);
+			throw new AppError('converter', `Invalid kind ${node.id}`);
 	}
 }
 
-function visitGroup(node) {
+function visitGroup(node: ISerializationNode) {
 	const line = node.line;
 	const opExpr = find(line, '#logical-op', '#logical-op');
 	const children = node.children.filter(notPlaceholder).map(visit);
@@ -52,7 +52,7 @@ function visitGroup(node) {
 		}), children[0]);
 }
 
-function visitCondition(node) {
+function visitCondition(node: ISerializationNode) {
 	const line = node.line;
 	const opExpr = find(line, '#operator', '#operator');
 	const value = opExpr.value.toUpperCase();
@@ -89,7 +89,7 @@ function visitCondition(node) {
 	return condition;
 }
 
-function visitUnary(line, op) {
+function visitUnary(line, op: string) {
 	const left = visitField(line);
 
 	return {
@@ -98,7 +98,7 @@ function visitUnary(line, op) {
 	};
 }
 
-function visitBinary(line, op) {
+function visitBinary(line, op: string) {
 	const left = visitField(line);
 	const right = find(line, '#operand', '#value') || find(line, '#fieldRight');
 
@@ -109,7 +109,7 @@ function visitBinary(line, op) {
 	};
 }
 
-function visitIn(line) {
+function visitIn(line: ISerializationGroup[]) {
 	const left = visitField(line);
 	const right = find(line, '#operand', '#in-operand') || find(line, '#fieldRight');
 
@@ -120,7 +120,7 @@ function visitIn(line) {
 	};
 }
 
-function visitBetween(line) {
+function visitBetween(line: ISerializationGroup[]) {
 	const left = visitField(line);
 	const from = find(line, '#operand', '#from') || find(line, '#fieldFrom');
 	const to = find(line, '#operand', '#to') || find(line, '#fieldTo');
@@ -132,15 +132,15 @@ function visitBetween(line) {
 	};
 }
 
-function visitField(line) {
+function visitField(line: ISerializationGroup[]) {
 	return find(line, '#field') || find(line, '#fieldLeft');
 }
 
-function notPlaceholder(node) {
+function notPlaceholder(node: ISerializationNode) {
 	return !node.attributes.placeholder;
 }
 
-function find(line, groupId: string, exprId?: string) {
+function find(line: ISerializationGroup[], groupId: string, exprId?: string) {
 	const group = findById(line, groupId);
 	if (!group) {
 		return null;
@@ -149,8 +149,8 @@ function find(line, groupId: string, exprId?: string) {
 	return findById(group.expressions, exprId || groupId);
 }
 
-function findById(items, id: string) {
-	const result = items.filter(item => item.id === id);
+function findById(items: ISerializationGroup[] | ISerializationExpression[], id: string) {
+	const result = (items as any).filter(item => item.id === id);
 	const length = result.length;
 
 	if (length === 1) {
