@@ -1,20 +1,17 @@
 'use strict';
 
+const libName = require('./package.json').name;
 const fs = require('fs');
 const path = require('path');
 const glob = require('glob');
-const camelCase = require('camelcase');
 const ngc = require('@angular/compiler-cli/src/main').main;
 const rollup = require('rollup');
 const uglify = require('rollup-plugin-uglify');
-const sourcemaps = require('rollup-plugin-sourcemaps');
-const nodeResolve = require('rollup-plugin-node-resolve');
-const commonjs = require('rollup-plugin-commonjs');
 const alias = require('rollup-plugin-alias');
 const sass = require('npm-sass');
 const inlineStyles = require('./build.inline');
+const rollupConfig = require('./build.rollup');
 
-const libName = require('./package.json').name;
 const rootFolder = path.join(__dirname);
 const tscFolder = path.join(rootFolder, 'out-tsc');
 const srcFolder = path.join(rootFolder, 'src');
@@ -22,7 +19,9 @@ const distFolder = path.join(rootFolder, 'dist');
 const tempFolder = tscFolder; // path.join(tscFolder, 'lib');
 const themeFolder = tempFolder;
 const es5Folder = path.join(tscFolder, 'es5');
+const es5Entry = path.join(es5Folder, 'index.js');
 const es2015Folder = path.join(tscFolder, 'es2015');
+const es2015Entry = path.join(es2015Folder, 'index.js');
 
 return Promise.resolve()
   // Copy library to temporary folder and inline html/css.
@@ -66,110 +65,58 @@ return Promise.resolve()
   .then(() => relativeCopy('**/*.metadata.json', es2015Folder, distFolder))
   .then(() => console.log('copy metadata: succeeded'))
   // Bundle lib.
-  .then(() => console.log(`bundle: ${libName}`))
+  .then(() => console.log(`bundle umd: ${libName}`))
   .then(() => {
-    const es2015Entry = path.join(es2015Folder, `index.js`);
-    const es5Entry = path.join(es5Folder, `index.js`);
-    const rollupBaseConfig = {
-      output: {
-        name: camelCase(libName),
-        // ATTENTION:
-        // Add any dependency or peer dependency your library to `globals` and `external`.
-        // This is required for UMD bundle users.
-        globals: {
-          // The key here is library name, and the value is the the name of the global variable name
-          // the window object.
-          // See https://github.com/rollup/rollup/wiki/JavaScript-API#globals for more.
-          '@angular/core': 'ng.core',
-          '@angular/common': 'ng.common',
-          '@angular/material': 'ng.material',
-          '@angular/forms': 'ng.forms',
-          'rxjs': 'Rx',
-          'rxjs/operators': 'Rx.operators',
-          'rxjs/Observable': 'Rx',
-          'rxjs/ReplaySubject': 'Rx',
-          'rxjs/observable/fromEvent': 'Rx.Observable',
-          'rxjs/observable/race': 'Rx.Observable',
-          'rxjs/observable/of': 'Rx.Observable',
-          'rxjs/observable/throw': 'Rx.Observable'
-        }
-      },
-      external: [
-        // List of dependencies
-        // See https://github.com/rollup/rollup/wiki/JavaScript-API#external for more.
-        '@angular/core',
-        '@angular/common',
-        '@angular/material',
-        '@angular/forms',
-        'rxjs',
-        'rxjs/operators',
-        'rxjs/Observable',
-        'rxjs/ReplaySubject',
-        'rxjs/observable/fromEvent',
-        'rxjs/observable/race',
-        'rxjs/observable/of',
-        'rxjs/observable/throw'
-      ],
-      plugins: [
-        commonjs({
-          include: ['node_modules/rxjs/**']
-        }),
-        sourcemaps(),
-        nodeResolve({
-          jsnext: true,
-          module: true,
-          main: true,
-          browser: true
-        })
-      ]
-    };
-
-    // UMD bundle.
-    const umdConfig = Object.assign({}, rollupBaseConfig, {
+    const cfg = Object.assign({}, rollupConfig, {
       input: es5Entry,
-      output: Object.assign({}, rollupBaseConfig.output, {
+      output: Object.assign({}, rollupConfig.output, {
         file: path.join(distFolder, `bundles`, `${libName}.umd.js`),
         format: 'umd'
       })
     });
 
-    // Minified UMD bundle.
-    const minifiedUmdConfig = Object.assign({}, rollupBaseConfig, {
+    return rollup.rollup(cfg).then(bundle => bundle.write(cfg.output));
+  }) 
+  .then(() => console.log('bundle umd: succeeded'))
+  .then(() => console.log(`bundle umd.min: ${libName}`))
+  .then(() => {
+    const cfg = Object.assign({}, rollupConfig, {
       input: es5Entry,
-      output: Object.assign({}, rollupBaseConfig.output, {
+      output: Object.assign({}, rollupConfig.output, {
         file: path.join(distFolder, `bundles`, `${libName}.umd.min.js`),
         format: 'umd'
       }),
-      plugins: rollupBaseConfig.plugins.concat([uglify({})])
+      plugins: rollupConfig.plugins.concat([uglify({})])
     });
 
-    // ESM+ES5 flat module bundle.
-    const fesm5config = Object.assign({}, rollupBaseConfig, {
+    return rollup.rollup(cfg).then(bundle => bundle.write(cfg.output));
+  }) 
+  .then(() => console.log('bundle umd.min: succeeded'))
+  .then(() => console.log(`bundle es5: ${libName}`))
+  .then(() => {
+    const cfg = Object.assign({}, rollupConfig, {
       input: es5Entry,
-      output: Object.assign({}, rollupBaseConfig.output, {
+      output: Object.assign({}, rollupConfig.output, {
         file: path.join(distFolder, `bundles`, `${libName}.es5.js`),
         format: 'es'
       })
     });
-
-    // ESM+ES2015 flat module bundle.
-    const fesm2015config = Object.assign({}, rollupBaseConfig, {
+    return rollup.rollup(cfg).then(bundle => bundle.write(cfg.output));
+  }) 
+  .then(() => console.log('bundle es5: succeeded'))
+  .then(() => console.log(`bundle es2015: ${libName}`))
+  .then(() => {
+    const cfg = Object.assign({}, rollupConfig, {
       input: es2015Entry,
-      output: Object.assign({}, rollupBaseConfig.output, {
+      output: Object.assign({}, rollupConfig.output, {
         file: path.join(distFolder, `bundles`, `${libName}.js`),
         format: 'es'
       })
     });
 
-    const bundles = [
-      fesm2015config,
-      fesm5config,
-      umdConfig,
-      minifiedUmdConfig
-    ].map(cfg => rollup.rollup(cfg).then(bundle => bundle.write(cfg.output)));
-
-    return Promise.all(bundles);
-  })
+    return rollup.rollup(cfg).then(bundle => bundle.write(cfg.output));
+  }) 
+  .then(() => console.log('bundle es2015: succeeded'))
   .then(() => console.log('bundle: successed'))
   // Copy package files
   .then(() => console.log('copy package: start'))
