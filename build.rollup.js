@@ -47,18 +47,21 @@ module.exports = {
     'rxjs/observable/throw'
   ],
   plugins: [
-    commonjs({
-      include: [
-        'node_modules/rxjs/**',
-        'node_modules/livr/**'
-      ]
-    }),
-    sourcemaps(),
     nodeResolve({
       jsnext: true,
       module: true,
       main: true,
       browser: true
-    })
+    }),
+    commonjs({
+      include: [
+        'node_modules/rxjs/**',
+        'node_modules/livr/**'
+      ],
+      namedExports: {
+        'node_modules/livr/lib/LIVR.js': [ 'Validator' ]
+      }
+    }),
+    sourcemaps()
   ]
 };
