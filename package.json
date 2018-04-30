@@ -10,7 +10,8 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "clean": "rimraf out-tsc dist"
+    "clean": "rimraf out-tsc dist",
+    "release": "npm run build:lib && cd dist && npm publish"
   },
   "private": true,
   "dependencies": {

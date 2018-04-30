@@ -7,8 +7,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 * Auto-complete for Query builder.
 * Query builder input performance improvements.
 
-## [5.0.0] - 2018-04-20
+## [5.0.0] - 2018-04-30
 ### Added
+- `ng2-expression-builder` publish to npm.
+- `Aot` compilation support.
 - `Expression builder` module.
 - `Query filter` module.
 
