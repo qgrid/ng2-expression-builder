@@ -8,17 +8,17 @@ It tries to collect imperative instructrion under the declarative containers. Tr
 * On the second step you tell about instuctions that should be applied in your UI(add button and list, add element, remove element etc.). 
 * On the third step you just bind your instructions to UI, thats it!
 
-## How it can look like
-![alt tag](https://github.com/vkorolev/expression-builder/blob/master/assets/example.png?raw=true)
+## Installing
+`npm i --save ng2-expression-builder`
 
 ## Example
 [Stackblitz](https://stackblitz.com/edit/expression-builder-ng2-05-00-01?file=app%2Fapp.component.ts)
 
+## How it can look like
+![alt tag](https://github.com/vkorolev/expression-builder/blob/master/assets/example.png?raw=true)
+
 ## Licence
 Code licensed under MIT license.
-
-## Installing
-`npm i --save ng2-q-expression-builder`
 
 ## Development server
 
