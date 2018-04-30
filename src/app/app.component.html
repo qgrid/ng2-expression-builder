@@ -1,2 +1,5 @@
 <q-condition-builder [model]="model">
 </q-condition-builder>
+<button mat-button (click)="clear()">clear</button>
+<button mat-button [disabled]="!builder.save.canExecute()" (click)="save()">save</button>
+<button mat-button [disabled]="!savedCondition" (click)="load()">load</button>

@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { ConditionBuilderModel } from '../condition-builder/condition-builder.model';
+import { ConditionBuilderComponent } from '../condition-builder/condition-builder.component';
+import { ISerializationNode } from '../expression-builder/serialization.service';
 
 @Component({
   selector: 'app-root',
@@ -7,6 +9,12 @@ import { ConditionBuilderModel } from '../condition-builder/condition-builder.mo
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
+
+  @ViewChild(ConditionBuilderComponent)
+  builder: ConditionBuilderComponent;
+
+  savedCondition: ISerializationNode;
+
   title = 'app';
 
   getValues = field => [field.title];
@@ -17,7 +25,7 @@ export class AppComponent {
       title: 'Last Name'
     },
     {
-      type: 'boolean',
+      type: 'bool',
       key: 'gender',
       title: 'Gender'
     },
@@ -39,4 +47,21 @@ export class AppComponent {
   ];
 
   model = new ConditionBuilderModel(this.fields, this.getValues);
+
+  save() {
+    if (this.builder.save.canExecute()) {
+      const result = this.builder.save.execute();
+      this.savedCondition = result.node;
+    }
+  }
+
+  load() {
+    if (this.builder.load.canExecute(this.savedCondition)) {
+      this.builder.load.execute(this.savedCondition);
+    }
+  }
+
+  clear() {
+    this.builder.reset.execute();
+  }
 }

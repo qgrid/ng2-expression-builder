@@ -4,7 +4,7 @@ import { clone } from '../infrastructure/utility';
 import { ConditionBuilderService } from './condition-builder.service';
 import { WhereSchema } from './schema/where.schema';
 import { visit as convert } from './schema/converter';
-import { SerializationService } from '../expression-builder/serialization.service';
+import { SerializationService, ISerializationNode } from '../expression-builder/serialization.service';
 import { INodeSchema } from '../expression-builder/model/node.schema';
 import { Node } from '../expression-builder/model/node';
 import { EbNodeService } from '../expression-builder/eb-node.service';
@@ -13,6 +13,7 @@ import { TraverseService } from '../expression-builder/traverse.service';
 import { ConditionBuilderModel } from './condition-builder.model';
 import { AppError } from '../infrastructure/error';
 import { ThemeService } from '../theme/theme.service';
+import { IExpression } from './schema/expression';
 
 @Component({
 	selector: 'q-condition-builder',
@@ -72,19 +73,26 @@ export class ConditionBuilderComponent implements OnInit {
 		}
 	});
 
-	submit = new Command({
-		// execute: () => {
-		// 	const serializer = new SerializationService();
-		// 	const node = serializer.serialize(this.node);
+	load = new Command<ISerializationNode, boolean>({
+		execute: node => {
+			const serializer = new SerializationService();
+			this.node = serializer.deserialize(this.plan, node);
+			this.nodeService.current = this.node.children[0];
+			return true;
+		},
+		canExecute: node => !!node
+	});
 
-		// 	const by = clone(this.model.filter().by);
-		// 	by.$expression = convert(node);
-
-		// 	this.model.filter({ by });
-		// 	this.model.queryBuilder({ node: by.$expression ? node : null });
-
-		// 	this.close.emit();
-		// },
+	save = new Command<any, { node: ISerializationNode, expression: IExpression }>({
+		execute: () => {
+			const serializer = new SerializationService();
+			const node = serializer.serialize(this.node);
+			const expression = convert(node);
+			return {
+				node,
+				expression
+			};
+		},
 		canExecute: () => {
 			const depth = this.traverse.depth(this.node);
 			return depth((memo, expression, line, node) =>
