@@ -19,13 +19,13 @@
     ]
   },
   "files": [
-    "./out-tsc/index.ts"
+    "./out-tsc/public-api.ts"
   ],
   "angularCompilerOptions": {
     "annotateForClosureCompiler": true,
     "strictMetadataEmit": true,
     "skipTemplateCodegen": true,
-    "flatModuleOutFile": "ng2-expression-builder.js",
+    "flatModuleOutFile": "index.js",
     "flatModuleId": "ng2-expression-builder",
     "fullTemplateTypeCheck": true
   }
