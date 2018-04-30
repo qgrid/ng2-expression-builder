@@ -12,7 +12,7 @@ It tries to collect imperative instructrion under the declarative containers. Tr
 ![alt tag](https://github.com/vkorolev/expression-builder/blob/master/assets/example.png?raw=true)
 
 ## Example
-[Stackblitz](https://stackblitz.com/edit/expression-builder-ng2-05-00-00?file=app%2Fapp.component.ts)
+[Stackblitz](https://stackblitz.com/edit/expression-builder-ng2-05-00-01?file=app%2Fapp.component.ts)
 
 ## Licence
 Code licensed under MIT license.
