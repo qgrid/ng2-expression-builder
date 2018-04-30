@@ -1,0 +1,32 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "rootDir": "./out-tsc/",
+    "outDir": "./out-tsc/es2015",
+    "target": "es2015",
+    "sourceMap": true,
+    "declaration": true,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "typeRoots": [
+      "node_modules/@types",
+      "out-tsc/types"
+    ],
+    "lib": [
+      "es2017",
+      "dom"
+    ]
+  },
+  "files": [
+    "./out-tsc/public-api.ts"
+  ],
+  "angularCompilerOptions": {
+    "annotateForClosureCompiler": true,
+    "strictMetadataEmit": true,
+    "skipTemplateCodegen": true,
+    "flatModuleOutFile": "index.js",
+    "flatModuleId": "ng2-expression-builder",
+    "fullTemplateTypeCheck": true
+  }
+}

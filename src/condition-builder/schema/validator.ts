@@ -3,7 +3,7 @@ import { isArray } from '../../infrastructure/utility';
 import { IConditionBuilderModel } from '../condition-builder.model';
 import { FieldMap } from '../../infrastructure/field.service';
 import * as fieldService from '../../infrastructure/field.service';
-import { Validator as LIVRValidator } from '../../infrastructure/livr';
+import { Validator as RuleValidator } from '../../infrastructure/validator';
 
 export class Validator {
 	private fieldMap: FieldMap;
@@ -57,7 +57,7 @@ export class Validator {
 				}
 
 				const target = { [id]: value };
-				const validator = new LIVRValidator(schema);
+				const validator = new RuleValidator(schema);
 				const isValid = validator.validate(target);
 				if (isValid) {
 					return trueResult;
