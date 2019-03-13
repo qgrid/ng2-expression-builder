@@ -9,15 +9,11 @@ import { ISerializationNode } from '../expression-builder/serialization.service'
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-
   @ViewChild(ConditionBuilderComponent)
   builder: ConditionBuilderComponent;
 
   savedCondition: ISerializationNode;
-
   title = 'app';
-
-  getValues = field => [field.title];
   fields = [
     {
       type: 'text',
@@ -45,6 +41,8 @@ export class AppComponent {
       title: 'Email'
     }
   ];
+
+  getValues = field => [field.title];
 
   model = new ConditionBuilderModel(this.fields, this.getValues);
 

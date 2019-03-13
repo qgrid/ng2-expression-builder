@@ -26,5 +26,5 @@
     "url": "git+https://github.com/qgrid/ng2-expression-builder.git"
   },
   "typings": "./index.d.ts",
-  "version": "5.0.1"
+  "version": "6.0.0"
 }

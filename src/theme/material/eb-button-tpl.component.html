@@ -1,9 +1,9 @@
 <ng-template key="eb-button-tpl.component.html"
-             let-$expr>
+	     let-$expr>
 	<button mat-button
-	        class="q-condition-builder-button"
-	        (click)="$expr.click && $expr.click($event)"
-	        [ngClass]="$expr.classes">
+		class="q-condition-builder-button"
+		(click)="$expr.click && $expr.click($event)"
+		[ngClass]="$expr.classes">
 		{{$expr.text}}
 	</button>
 </ng-template>

@@ -7,6 +7,13 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 * Auto-complete for Query builder.
 * Query builder input performance improvements.
 
+## [6.0.0] - 2019-03-13
+### Added
+- Possibility to rewrite control templates.
+
+### Changed
+- Migrated to Angular 6.
+
 ## [5.0.1] - 2018-04-30
 ### Added
 - Endpoints to save/load conditions.
@@ -21,5 +28,6 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 - `Expression builder` module.
 - `Query filter` module.
 
-[unreleased]: https://github.com/qgrid/ng2-expression-builder/compare/v5.0.1...HEAD
+[unreleased]: https://github.com/qgrid/ng2-expression-builder/compare/v6.0.0...HEAD
+[6.0.0]: https://github.com/qgrid/ng2/compare/v6.0.0...v5.0.1
 [5.0.1]: https://github.com/qgrid/ng2/compare/v5.0.1...v5.0.0

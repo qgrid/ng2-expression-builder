@@ -56,7 +56,11 @@ module.exports = {
     commonjs({
       include: [
         'node_modules/rxjs/**',
-        'node_modules/livr/**'
+        'node_modules/livr/**',
+        'node_modules/lodash-es/**',
+      ],
+      exclude: [
+        'node_modules/lodash/**',
       ],
       namedExports: {
         'node_modules/livr/lib/LIVR.js': [ 'Validator' ]

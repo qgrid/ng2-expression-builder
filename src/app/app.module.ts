@@ -10,13 +10,14 @@ import { ThemeModule } from '../theme/material/theme.module';
 @NgModule({
   declarations: [
     AppComponent,
-
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+
     ConditionBuilderModule,
     ThemeModule,
+
     MatButtonModule
   ],
   providers: [],
