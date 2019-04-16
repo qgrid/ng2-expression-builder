@@ -1,18 +1,18 @@
 export abstract class Expression {
-	id: string;
-	type: string;
-	templateUrl = '';
-	method: string[] = [];
+    id: string;
+    type: string;
+    templateUrl = '';
+    method: string[] = [];
 }
 
 export class GroupExpression extends Expression {
-	public expressions: Expression[] = [];
+    public expressions: Expression[] = [];
 
-	constructor() {
-		super();
+    constructor() {
+        super();
 
-		this.type = 'group';
-		this.templateUrl = 'eb-group-tpl.component.html';
-	}
+        this.type = 'group';
+        this.templateUrl = 'eb-group-tpl.component.html';
+    }
 }
 

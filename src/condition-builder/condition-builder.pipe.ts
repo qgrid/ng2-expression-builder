@@ -9,36 +9,36 @@ import * as fieldService from '../infrastructure/field.service';
 import { Guard } from '../infrastructure/guard';
 
 @Pipe({
-	name: 'qConditionBuilderMarkup',
-	pure: false
+    name: 'qConditionBuilderMarkup',
+    pure: false
 })
 export class ConditionBuilderPipe implements PipeTransform {
-	visitor: MarkupVisitor;
+    visitor: MarkupVisitor;
 
-	transform(value: any, model: IConditionBuilderModel): any {
-		Guard.notNull(model, 'model');
+    transform(value: any, model: IConditionBuilderModel): any {
+        Guard.notNull(model, 'model');
 
-		const node = value as Node;
-		if (node) {
-			if (!this.visitor) {
-				const validator = new Validator(model);
-				const columnMap = fieldService.map(model.fields);
-				this.visitor =
-					new MarkupVisitor(
-						key => columnMap[key].title,
-						key => columnMap[key].type,
-						(key, value) => validator.for(key)(value).length === 0
-					);
-			}
+        const node = value as Node;
+        if (node) {
+            if (!this.visitor) {
+                const validator = new Validator(model);
+                const columnMap = fieldService.map(model.fields);
+                this.visitor =
+                    new MarkupVisitor(
+                        key => columnMap[key].title,
+                        key => columnMap[key].type,
+                        (key, value) => validator.for(key)(value).length === 0
+                    );
+            }
 
-			const serializer = new SerializationService();
-			const filter = serializer.serialize(node);
-			const expression = convert(filter);
-			if (expression) {
-				return this.visitor.visit(expression);
-			}
-		}
+            const serializer = new SerializationService();
+            const filter = serializer.serialize(node);
+            const expression = convert(filter);
+            if (expression) {
+                return this.visitor.visit(expression);
+            }
+        }
 
-		return 'Please, select a condition';
-	}
+        return 'Please, select a condition';
+    }
 }

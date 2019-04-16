@@ -1,14 +1,14 @@
 <ul class="q-eb-node"
-    [q-eb-class]="model.attr('class')"
-    [ngClass]="{'q-eb-active': service.current === model}"
-    (click)="select($event)">
+	[q-eb-class]="model.attr('class')"
+	[ngClass]="{'q-eb-active': service.current === model}"
+	(click)="select($event)">
 	<li class="q-eb-line">
 		<ul>
 			<li *ngFor="let expr of model.line.expressions"
-			    class="q-eb-expression">
+				class="q-eb-expression">
 				<q-eb-expression [model]="expr"
-				                 [node]="model"
-				                 [line]="model.line">
+								 [node]="model"
+								 [line]="model.line">
 				</q-eb-expression>
 			</li>
 		</ul>
@@ -17,7 +17,7 @@
 	<li class="q-eb-children">
 		<ul>
 			<li *ngFor="let child of model.children"
-			    class="q-eb-child">
+				class="q-eb-child">
 				<q-eb-node [model]="child">
 				</q-eb-node>
 			</li>
@@ -26,15 +26,15 @@
 </ul>
 
 <ng-template key="eb-group-tpl.component.html"
-             let-$group
-             let-$node="node"
-             let-$line="line">
+			 let-$group
+			 let-$node="node"
+			 let-$line="line">
 	<ul class="q-group">
 		<li *ngFor="let expr of $group.expressions"
-		    class="q-eb-expression">
+			class="q-eb-expression">
 			<q-eb-expression [model]="expr"
-			                 [node]="$node"
-			                 [line]="$line">
+							 [node]="$node"
+							 [line]="$line">
 			</q-eb-expression>
 		</li>
 	</ul>

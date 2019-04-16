@@ -26,7 +26,7 @@ import { EbButtonTplComponent } from './eb-button-tpl.component';
 import { EbIconButtonTplComponent } from './eb-icon-button-tpl.component';
 import { EbInputTplComponent } from './eb-input-tpl.component';
 import { EbLabelTplComponent } from './eb-label-tpl.component';
-import { EbMultiselectTplComponent } from './eb-multiselect-tpl.component.1';
+import { EbMultiselectTplComponent } from './eb-multiselect-tpl.component';
 import { EbSelectTplComponent } from './eb-select-tpl.component';
 import { TemplateCacheDirective } from '../../template/template-cache.directive';
 
