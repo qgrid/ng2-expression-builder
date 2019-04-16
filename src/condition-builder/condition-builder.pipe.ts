@@ -27,7 +27,7 @@ export class ConditionBuilderPipe implements PipeTransform {
                     new MarkupVisitor(
                         key => columnMap[key].title,
                         key => columnMap[key].type,
-                        (key, value) => validator.for(key)(value).length === 0
+                        (k, v) => validator.for(k)(v).length === 0
                     );
             }
 
@@ -39,6 +39,6 @@ export class ConditionBuilderPipe implements PipeTransform {
             }
         }
 
-        return 'Please, select a condition';
+        return null;
     }
 }

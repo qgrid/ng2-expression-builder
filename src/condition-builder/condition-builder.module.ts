@@ -4,6 +4,7 @@ import { ConditionBuilderComponent } from './condition-builder.component';
 import { ConditionBuilderPipe } from './condition-builder.pipe';
 import { EbModule } from '../expression-builder/eb.module';
 import { TemplateModule } from '../template/template.module';
+import { ConditionNodePipe } from './condition-node.pipe';
 
 @NgModule({
     imports: [
@@ -13,11 +14,13 @@ import { TemplateModule } from '../template/template.module';
     ],
     exports: [
         ConditionBuilderComponent,
-        ConditionBuilderPipe
+        ConditionBuilderPipe,
+        ConditionNodePipe,
     ],
     declarations: [
         ConditionBuilderComponent,
-        ConditionBuilderPipe
+        ConditionBuilderPipe,
+        ConditionNodePipe,
     ]
 })
 export class ConditionBuilderModule {
