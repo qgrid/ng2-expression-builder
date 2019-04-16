@@ -1,50 +1,50 @@
 import { isFunction } from '../infrastructure/utility';
 
 export function method(inst: any, key: string) {
-	const sourceFn = inst[key];
+    const sourceFn = inst[key];
 
-	return {
-		with: withFactory(inst, key, sourceFn)
-	};
+    return {
+        with: withFactory(inst, key, sourceFn)
+    };
 }
 
 export function methodsOf(inst: any) {
-	const keys = Object.keys(inst);
-	const length = keys.length;
-	const patch = {};
+    const keys = Object.keys(inst);
+    const length = keys.length;
+    const patch = {};
 
-	for (let i = 0; i < length; i++) {
-		const key = keys[i];
-		if (isFunction(inst[key])) {
-			patch[key] = method(inst, key);
-		}
-	}
+    for (let i = 0; i < length; i++) {
+        const key = keys[i];
+        if (isFunction(inst[key])) {
+            patch[key] = method(inst, key);
+        }
+    }
 
-	return {
-		with: (...args) => {
-			const keys = Object.keys(patch);
-			const length = keys.length;
+    return {
+        with: (...args) => {
+            const keys = Object.keys(patch);
+            const length = keys.length;
 
-			for (let i = 0; i < length; i++) {
-				const key = keys[i];
-				inst.action = key;
-				patch[key].with.apply(inst, args);
-			}
-		}
-	};
+            for (let i = 0; i < length; i++) {
+                const key = keys[i];
+                inst.action = key;
+                patch[key].with.apply(inst, args);
+            }
+        }
+    };
 }
 
 export function withFactory(inst, key, sourceFn) {
-	const withFn = (...withArgs) =>
-		inst[key] = (...keyArgs) =>
-			sourceFn.apply(inst, withArgs.concat(keyArgs));
+    const withFn = (...withArgs) =>
+        inst[key] = (...keyArgs) =>
+            sourceFn.apply(inst, withArgs.concat(keyArgs));
 
-	(withFn as any).decorator = (...args) => {
-		const decorate = args[0];
-		args = args.slice(1);
+    (withFn as any).decorator = (...args) => {
+        const decorate = args[0];
+        args = args.slice(1);
 
-		inst[key] = () => decorate.apply(inst, [sourceFn, inst, key].concat(args));
-	};
+        inst[key] = () => decorate.apply(inst, [sourceFn, inst, key].concat(args));
+    };
 
-	return withFn;
+    return withFn;
 }

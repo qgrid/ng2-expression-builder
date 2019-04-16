@@ -5,102 +5,102 @@ import { Node } from './node';
 import { GroupSchema } from './group.schema';
 
 export interface INodeSchema {
-	schemaMap: { [key: string]: INodeSchema };
+    schemaMap: { [key: string]: INodeSchema };
 
-	apply(node?: Node): Node;
-	attr(key: string, value: any): INodeSchema;
-	node(id: string, build: (schema: INodeSchema) => void): INodeSchema;
-	group(id: string, build: (schema: GroupSchema) => void): INodeSchema;
-	get(id: string): INodeSchema;
-	materialize(id: string): Node;
+    apply(node?: Node): Node;
+    attr(key: string, value: any): INodeSchema;
+    node(id: string, build: (schema: INodeSchema) => void): INodeSchema;
+    group(id: string, build: (schema: GroupSchema) => void): INodeSchema;
+    get(id: string): INodeSchema;
+    materialize(id: string): Node;
 }
 
 export function nodeSchema(GroupSchemaT: typeof GroupSchema) {
-	return class NodeSchema implements INodeSchema {
-		public plan = [];
-		public planMap = {};
+    return class NodeSchema implements INodeSchema {
+        public plan = [];
+        public planMap = {};
 
-		constructor(public schemaMap = {}) {
-		}
+        constructor(public schemaMap = {}) {
+        }
 
-		clone(): INodeSchema {
-			const schema = new NodeSchema({ ...this.schemaMap });
-			schema.plan = [...this.plan];
-			schema.planMap = { ...this.planMap };
-			return schema;
-		}
+        clone(): INodeSchema {
+            const schema = new NodeSchema({ ...this.schemaMap });
+            schema.plan = [...this.plan];
+            schema.planMap = { ...this.planMap };
+            return schema;
+        }
 
-		attr(key: string, value: any) {
-			this.plan.push(node => node.attr(key, value));
-			return this;
-		}
+        attr(key: string, value: any) {
+            this.plan.push(node => node.attr(key, value));
+            return this;
+        }
 
-		apply(node?: Node): Node {
-			node = node || new Node('#root', this);
+        apply(node?: Node): Node {
+            node = node || new Node('#root', this);
 
-			const line = new Line(GroupSchemaT);
-			node.line = line;
+            const line = new Line(GroupSchemaT);
+            node.line = line;
 
-			this.plan.forEach(p => p(node, line));
+            this.plan.forEach(p => p(node, line));
 
-			return node;
-		}
+            return node;
+        }
 
-		node(id: string, build: (schema: INodeSchema) => void) {
-			if (!build) {
-				throw new AppError('node.schema', 'Build function is not defined');
-			}
+        node(id: string, build: (schema: INodeSchema) => void) {
+            if (!build) {
+                throw new AppError('node.schema', 'Build function is not defined');
+            }
 
-			this.plan.push((node, line) => {
-				const schema = new NodeSchema(this.schemaMap);
-				build(schema);
+            this.plan.push((node, line) => {
+                const schema = new NodeSchema(this.schemaMap);
+                build(schema);
 
-				const newNode = new Node(id, schema, node);
-				schema.apply(newNode);
-				node.addChildAfter(newNode);
-				this.schemaMap[id] = schema;
+                const newNode = new Node(id, schema, node);
+                schema.apply(newNode);
+                node.addChildAfter(newNode);
+                this.schemaMap[id] = schema;
 
-				return node;
-			});
+                return node;
+            });
 
-			return this;
-		}
+            return this;
+        }
 
-		group(id: string, build: (schema: GroupSchema) => void) {
-			if (!build) {
-				throw new AppError('node.schema', 'Build function is not defined');
-			}
+        group(id: string, build: (schema: GroupSchema) => void) {
+            if (!build) {
+                throw new AppError('node.schema', 'Build function is not defined');
+            }
 
-			const buildGroup = (node, line) => {
-				const group = new GroupExpression();
-				group.id = id;
+            const buildGroup = (node, line) => {
+                const group = new GroupExpression();
+                group.id = id;
 
-				const schema = new GroupSchemaT(node, line);
-				build(schema);
-				schema.apply(group);
-				line.add(group);
+                const schema = new GroupSchemaT(node, line);
+                build(schema);
+                schema.apply(group);
+                line.add(group);
 
-				return node;
-			};
+                return node;
+            };
 
-			this.plan.push(buildGroup);
-			this.planMap[id] = buildGroup;
+            this.plan.push(buildGroup);
+            this.planMap[id] = buildGroup;
 
-			return this;
-		}
+            return this;
+        }
 
-		get(id: string) {
-			const schema = this.schemaMap[id];
-			if (!schema) {
-				throw new AppError('node.schema', `Schema ${id} is not found`);
-			}
+        get(id: string) {
+            const schema = this.schemaMap[id];
+            if (!schema) {
+                throw new AppError('node.schema', `Schema ${id} is not found`);
+            }
 
-			return schema;
-		}
+            return schema;
+        }
 
-		materialize(id: string): Node {
-			const schema = this.get(id);
-			return schema.apply(new Node(id, schema));
-		}
-	};
+        materialize(id: string): Node {
+            const schema = this.get(id);
+            return schema.apply(new Node(id, schema));
+        }
+    };
 }

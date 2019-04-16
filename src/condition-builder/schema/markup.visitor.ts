@@ -110,7 +110,7 @@ export class MarkupVisitor extends Visitor {
                 break;
             case 'like':
                 op = 'like';
-                break
+                break;
             case 'notLike':
                 op = 'not like';
                 break;

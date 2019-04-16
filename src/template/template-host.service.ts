@@ -3,8 +3,8 @@ import { identity } from '../infrastructure/utility';
 
 @Injectable()
 export class TemplateHostService {
-	public key: (x: string) => string = identity;
+    public key: (x: string) => string = identity;
 
-	constructor() {
-	}
+    constructor() {
+    }
 }

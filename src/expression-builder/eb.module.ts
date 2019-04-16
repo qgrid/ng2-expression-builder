@@ -8,24 +8,24 @@ import { EbClassDirective } from './eb-class.directive';
 import { EbNodeService } from './eb-node.service';
 
 @NgModule({
-	imports: [
-		CommonModule,
-		TemplateModule
-	],
-	exports: [
-		EbNodeComponent,
-		EbExpressionComponent,
-		EbClassDirective
-	],
-	declarations: [
-		EbNodeComponent,
-		EbExpressionComponent,
-		EbClassDirective
-	],
-	providers: [
-		SerializationService,
-		EbNodeService
-	]
+    imports: [
+        CommonModule,
+        TemplateModule
+    ],
+    exports: [
+        EbNodeComponent,
+        EbExpressionComponent,
+        EbClassDirective
+    ],
+    declarations: [
+        EbNodeComponent,
+        EbExpressionComponent,
+        EbClassDirective
+    ],
+    providers: [
+        SerializationService,
+        EbNodeService
+    ]
 })
 export class EbModule {
 }

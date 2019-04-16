@@ -4,4 +4,4 @@ export interface IExpression {
     left: IExpression | any;
     right: IExpression | any;
     arguments?: IExpression[];
-} 
+}
