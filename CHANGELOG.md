@@ -7,6 +7,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 * Auto-complete for Query builder.
 * Query builder input performance improvements.
 
+## [6.2.0] - 2019-04-25
+### Added
+- Possibility to propagate custom operators in condition builder.
+
 ## [6.1.0] - 2019-04-16
 ### Added
 - Markup pipe.
@@ -32,7 +36,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 - `Expression builder` module.
 - `Query filter` module.
 
-[unreleased]: https://github.com/qgrid/ng2-expression-builder/compare/v6.1.0...HEAD
+[unreleased]: https://github.com/qgrid/ng2-expression-builder/compare/v6.2.0...HEAD
+[6.1.0]: https://github.com/qgrid/ng2/compare/v6.1.0...v6.2.0
 [6.1.0]: https://github.com/qgrid/ng2/compare/v6.0.0...v6.1.0
 [6.0.0]: https://github.com/qgrid/ng2/compare/v6.0.0...v5.0.1
 [5.0.1]: https://github.com/qgrid/ng2/compare/v5.0.1...v5.0.0

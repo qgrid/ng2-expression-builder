@@ -1,9 +1,8 @@
-import { typeMapping as operators } from './operator';
 import { suggestFactory, suggestsFactory } from './suggest.service';
 import { ConditionBuilderService, IConditionBuilderSchema } from '../condition-builder.service';
 import { isArray, noop } from '../../infrastructure/utility';
 import { Validator } from './validator';
-import { ConditionBuilderModel } from '../condition-builder.model';
+import { ConditionBuilderModel, Field } from '../condition-builder.model';
 
 export const getValue = (line, id, props) => {
     const group = line.get(id);
@@ -25,6 +24,14 @@ export const getValue = (line, id, props) => {
     return null;
 };
 
+function materialize(field): Field {
+    return {
+        key: field.value,
+        title: field.getLabel(field.value),
+        type: field.getType(field.value)
+    };
+}
+
 export class WhereSchema {
     constructor(private model: ConditionBuilderModel) {
     }
@@ -35,6 +42,7 @@ export class WhereSchema {
         const suggest = suggestFactory(model, '#field');
         const suggests = suggestsFactory(model, '#field');
         const validator = new Validator(model);
+        const defaultField = model.fields.length ? model.fields[0] : null;
 
         return service
             .build()
@@ -72,7 +80,7 @@ export class WhereSchema {
                             .select('#field', {
                                 classes: ['qb-field'],
                                 options: model.fields.map(c => c.key),
-                                value: model.fields.length ? model.fields[0].key : '',
+                                value: defaultField ? defaultField.key : '',
                                 getLabel: function (node, line, key) {
                                     const column = model.fields.filter(c => c.key === key)[0];
                                     return (column && column.title) || null;
@@ -82,9 +90,7 @@ export class WhereSchema {
                                     return (column && column.type) || null;
                                 },
                                 change: function (node, line) {
-                                    const field = this.value;
-                                    const type = this.getType(field);
-                                    const ops = operators[type] || [];
+                                    const ops = model.getOperators(materialize(this));
                                     const op = line.get('#operator').expressions[0];
 
                                     if (ops.indexOf(op.value) < 0) {
@@ -107,12 +113,9 @@ export class WhereSchema {
                                 classes: ['qb-operator'],
                                 getOptions: function (node, line) {
                                     const field = line.get('#field').expressions[0];
-                                    const name = field.value;
-                                    const type = field.getType(name);
-
-                                    return type ? operators[type] : [];
+                                    return model.getOperators(materialize(field));
                                 },
-                                value: 'EQUALS',
+                                value: defaultField ? model.getOperators(defaultField)[0] : null,
                                 change: function (node, line) {
                                     switch (this.value.toLowerCase()) {
                                         case 'equals':
