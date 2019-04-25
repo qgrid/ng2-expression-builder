@@ -1,16 +1,12 @@
-import { Injectable } from '@angular/core';
 import { AppError } from '../infrastructure/error';
-import { isUndefined, yes, uniq } from '../infrastructure/utility';
-import { ExpressionBuilder } from '../expression-builder/model/expression.builder';
-import { INodeSchema } from '../expression-builder/model/node.schema';
-import { Node } from '../expression-builder/model/node';
-import { typeMapping } from './schema/operator';
+import { isUndefined, uniq } from '../infrastructure/utility';
+import { typeMapping as operators } from './schema/operator';
 import * as fieldService from '../infrastructure/field.service';
 
 export interface Field {
-    key: string,
-    title: string,
-    type: string
+    key: string;
+    title: string;
+    type: string;
 }
 
 export declare type FieldMap = { [key: string]: Field };
@@ -20,11 +16,14 @@ export interface IConditionBuilderModel {
     getSuggests(key, skip, take, search, selection?: Array<string>): Promise<string[]>;
 }
 
-
 export class ConditionBuilderModel implements IConditionBuilderModel {
     constructor(
         public fields: Array<Field>,
-        private getValues: (field: Field) => any[]) {
+        private getValues: (field: Field) => any[],
+        public getOperators?: (field: Field) => string[]) {
+        if (!getOperators) {
+            this.getOperators = (field: Field) => operators[field.type] || [];
+        }
     }
 
     getSuggests(key, skip, take, search, selection: Array<string> = []): Promise<string[]> {
