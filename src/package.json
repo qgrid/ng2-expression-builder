@@ -26,5 +26,9 @@
     "url": "git+https://github.com/qgrid/ng2-expression-builder.git"
   },
   "typings": "./index.d.ts",
-  "version": "6.2.0"
+  "version": "6.2.0",
+  "dependencies": {
+    "classlist.js": "^1.1.20150312",
+    "web-animations-js": "^2.3.2"
+  }
 }
