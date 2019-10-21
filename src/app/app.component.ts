@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ConditionBuilderModel } from '../condition-builder/condition-builder.model';
 import { ConditionBuilderComponent } from '../condition-builder/condition-builder.component';
 import { ISerializationNode } from '../expression-builder/serialization.service';
@@ -8,10 +8,10 @@ import { ISerializationNode } from '../expression-builder/serialization.service'
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent {
-  @ViewChild(ConditionBuilderComponent)
+export class AppComponent implements OnInit {
+  @ViewChild(ConditionBuilderComponent, {static: false})
   builder: ConditionBuilderComponent;
-
+  model: ConditionBuilderModel;
   savedCondition: ISerializationNode;
   title = 'app';
   fields = [
@@ -44,7 +44,9 @@ export class AppComponent {
 
   getValues = field => [field.title];
 
-  model = new ConditionBuilderModel(this.fields, this.getValues);
+  ngOnInit() {
+    this.model = new ConditionBuilderModel(this.fields, this.getValues);
+  }
 
   save() {
     if (this.builder.save.canExecute()) {
