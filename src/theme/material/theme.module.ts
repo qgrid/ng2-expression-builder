@@ -68,9 +68,6 @@ import { TemplateCacheDirective } from '../../template/template-cache.directive'
         TemplateService,
         TemplateLinkService,
         TemplateCacheService
-    ],
-    entryComponents: [
-        ThemeComponent
     ]
 })
 export class ThemeModule {
