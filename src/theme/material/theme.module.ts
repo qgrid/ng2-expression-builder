@@ -5,17 +5,15 @@ import { ThemeComponent } from './theme.component';
 import { TemplateModule } from '../../template/template.module';
 import { TemplateService } from '../../template/template.service';
 import { ThemeService } from '../theme.service';
-import {
-    MatIconModule,
-    MatButtonModule,
-    MatSelectModule,
-    MatTooltipModule,
-    MatInputModule,
-    MatDatepickerModule,
-    MatChipsModule,
-    MatAutocompleteModule,
-    MatToolbarModule
-} from '@angular/material';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatButtonModule } from '@angular/material/button';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { TemplateLinkService } from '../../template/template-link.service';
 import { TemplateCacheService } from '../../template/template-cache.service';
 import { ConditionBuilderModule } from '../../condition-builder/condition-builder.module';
