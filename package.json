@@ -11,7 +11,8 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "clean": "rimraf out-tsc dist",
-    "release": "npm run build:lib && cd dist && npm publish"
+    "release": "npm run build:lib && cd dist && npm publish",
+    "postinstall": "ngcc"
   },
   "private": true,
   "dependencies": {
