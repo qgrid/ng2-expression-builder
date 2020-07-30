@@ -9,7 +9,7 @@ import { ISerializationNode } from '../expression-builder/serialization.service'
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
-  @ViewChild(ConditionBuilderComponent, {static: false})
+  @ViewChild(ConditionBuilderComponent)
   builder: ConditionBuilderComponent;
   model: ConditionBuilderModel;
   savedCondition: ISerializationNode;
