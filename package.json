@@ -42,7 +42,7 @@
     "@types/node": "^12.11.1",
     "babel-core": "^6.26.3",
     "babel-preset-es2015-rollup": "^3.0.0",
-    "codelyzer": "^5.1.2",
+    "codelyzer": "^6.0.1",
     "jasmine-core": "~3.5.0",
     "jasmine-spec-reporter": "~4.2.1",
     "karma": "^4.4.1",
