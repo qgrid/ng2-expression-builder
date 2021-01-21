@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "ng2-expression-builder": {
+    "ng2-expression-builder-app": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
@@ -15,7 +15,7 @@
             "outputPath": "dist",
             "index": "src/index.html",
             "main": "src/main.ts",
-            "tsConfig": "src/tsconfig.app.json",
+            "tsConfig": "tsconfig.app.json",
             "polyfills": "src/polyfills.ts",
             "assets": [
               "src/assets",
@@ -54,18 +54,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "ng2-expression-builder:build"
+            "browserTarget": "ng2-expression-builder-app:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "ng2-expression-builder:build:production"
+              "browserTarget": "ng2-expression-builder-app:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "ng2-expression-builder:build"
+            "browserTarget": "ng2-expression-builder-app:build"
           }
         },
         "test": {
@@ -74,7 +74,7 @@
             "main": "src/test.ts",
             "karmaConfig": "./karma.conf.js",
             "polyfills": "src/polyfills.ts",
-            "tsConfig": "src/tsconfig.spec.json",
+            "tsConfig": "tsconfig.spec.json",
             "scripts": [],
             "styles": [
               "src/styles.scss"
@@ -89,8 +89,8 @@
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": [
-              "src/tsconfig.app.json",
-              "src/tsconfig.spec.json"
+              "tsconfig.app.json",
+              "tsconfig.spec.json"
             ],
             "exclude": [
               "**/node_modules/**"
@@ -99,7 +99,7 @@
         }
       }
     },
-    "ng2-expression-builder-e2e": {
+    "ng2-expression-builder-app-e2e": {
       "root": "e2e",
       "sourceRoot": "e2e",
       "projectType": "application",
@@ -108,7 +108,7 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "./protractor.conf.js",
-            "devServerTarget": "ng2-expression-builder:serve"
+            "devServerTarget": "ng2-expression-builder-app:serve"
           }
         },
         "lint": {
@@ -123,9 +123,49 @@
           }
         }
       }
+    },
+    "ng2-expression-builder": {
+      "projectType": "library",
+      "root": "projects/ng2-expression-builder",
+      "sourceRoot": "projects/ng2-expression-builder/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "tsConfig": "projects/ng2-expression-builder/tsconfig.lib.json",
+            "project": "projects/ng2-expression-builder/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/ng2-expression-builder/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/ng2-expression-builder/src/test.ts",
+            "tsConfig": "projects/ng2-expression-builder/tsconfig.spec.json",
+            "karmaConfig": "projects/ng2-expression-builder/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/ng2-expression-builder/tsconfig.lib.json",
+              "projects/ng2-expression-builder/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
     }
   },
-  "defaultProject": "ng2-expression-builder",
+  "defaultProject": "ng2-expression-builder-app",
   "schematics": {
     "@schematics/angular:component": {
       "prefix": "app",

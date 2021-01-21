@@ -7,7 +7,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 
 import { AppComponent } from './app.component';
-import { ThemeModule, ConditionBuilderModule } from '../public-api';
+import { ThemeModule, ConditionBuilderModule } from 'ng2-expression-builder';
 import { FormsModule } from '@angular/forms';
 
 @NgModule({
