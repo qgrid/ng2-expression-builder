@@ -1,0 +1,27 @@
+{
+  "name": "ng2-expression-builder",
+  "description": "Angular Expression builder",
+  "version": "6.2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ddubrava/angular8-yandex-maps.git"
+  },
+  "keywords": [
+    "angular",
+    "expression",
+    "expression builder",
+    "query",
+    "query builder",
+    "condition builder"
+  ],
+  "license": "MIT",
+  "peerDependencies": {
+    "@angular/common": "^11.0.9",
+    "@angular/core": "^11.0.9",
+    "@angular/cdk": "^11.0.4",
+    "@angular/material": "~11.0.4"
+  },
+  "dependencies": {
+    "tslib": "^2.0.0"
+  }
+}
