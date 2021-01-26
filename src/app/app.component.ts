@@ -1,7 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ConditionBuilderModel } from '../condition-builder/condition-builder.model';
-import { ConditionBuilderComponent } from '../condition-builder/condition-builder.component';
-import { ISerializationNode } from '../expression-builder/serialization.service';
+import { ConditionBuilderModel, ConditionBuilderComponent, ISerializationNode } from 'ng2-expression-builder';
 
 @Component({
   selector: 'app-root',

@@ -1,5 +1,4 @@
 import { Injectable, EventEmitter } from '@angular/core';
-import { EbNodeComponent } from './eb-node.component';
 import { Node } from './model/node';
 
 export interface EbNodeServiceEventArg<T> {
