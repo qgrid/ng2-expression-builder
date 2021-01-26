@@ -21,11 +21,11 @@
             </mat-toolbar>
         </div>
         <div class="q-condition-builder-expression">
-            <q-eb-node [model]="$builder.node">
+            <q-eb-node [model]="$builder.root">
             </q-eb-node>
         </div>
         <div class="q-condition-builder-expression-line"
-             [innerHTML]="$builder.node | qConditionBuilderMarkup: $builder.model">
+             [innerHTML]="$builder.root | qConditionBuilderMarkup: $builder.model">
         </div>
     </div>
 </ng-template>

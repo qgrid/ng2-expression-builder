@@ -1,29 +1,37 @@
-import { Component, Optional, Output, EventEmitter, OnInit, ViewEncapsulation, Input, ElementRef } from '@angular/core';
+import { AppError } from '../infrastructure/error';
 import { Command } from '../infrastructure/command';
-import { clone } from '../infrastructure/utility';
-import { ConditionBuilderService } from './condition-builder.service';
-import { WhereSchema } from './schema/where.schema';
-import { visit as convert } from './schema/converter';
-import { SerializationService, ISerializationNode } from '../expression-builder/serialization.service';
+import { Component, Output, EventEmitter, OnInit, Input, ElementRef, ChangeDetectionStrategy, ChangeDetectorRef, ApplicationRef } from '@angular/core';
+import { ConditionBuilderModel } from './condition-builder.model';
+import { EbNodeService } from '../expression-builder/eb-node.service';
+import { IExpression } from './schema/expression';
 import { INodeSchema } from '../expression-builder/model/node.schema';
 import { Node } from '../expression-builder/model/node';
-import { EbNodeService } from '../expression-builder/eb-node.service';
-import { EbNodeComponent } from '../expression-builder/eb-node.component';
-import { TraverseService } from '../expression-builder/traverse.service';
-import { ConditionBuilderModel } from './condition-builder.model';
-import { AppError } from '../infrastructure/error';
+import { SerializationService, ISerializationNode } from '../expression-builder/serialization.service';
 import { ThemeService } from '../theme/theme.service';
-import { IExpression } from './schema/expression';
+import { TraverseService } from '../expression-builder/traverse.service';
+import { WhereSchema } from './schema/where.schema';
+import { visit as convert } from './schema/converter';
 
 @Component({
     selector: 'q-condition-builder',
-    templateUrl: './condition-builder.component.html'
+    templateUrl: './condition-builder.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ConditionBuilderComponent implements OnInit {
-    @Input() model: ConditionBuilderModel;
+    private _model: ConditionBuilderModel;
+
+    @Input() set model(value: ConditionBuilderModel) {
+      this._model = value;
+      this.cdr.detectChanges();
+    }
+
+    get model() {
+      return this._model;
+    }
+
     @Output() close = new EventEmitter<any>();
 
-    node: Node;
+    root: Node;
     themeComponent: any;
     $implicit = this;
 
@@ -35,7 +43,10 @@ export class ConditionBuilderComponent implements OnInit {
             const current = this.nodeService.current;
             const parent = this.findLogicalNode(current);
             const group = parent.clone();
+
             parent.addChildAfter(group, current.id === '#condition' && current);
+            this.nodeService.currentChange.emit();
+
             if (current.id === '#condition') {
                 this.nodeService.current = group;
             }
@@ -48,7 +59,10 @@ export class ConditionBuilderComponent implements OnInit {
             const current = this.nodeService.current;
             const parent = this.findLogicalNode(current);
             const rule = this.plan.materialize('#condition');
+
             parent.addChildAfter(rule, current.id === '#condition' && current);
+            this.nodeService.currentChange.emit();
+
             if (current.id === '#condition') {
                 this.nodeService.current = rule;
             }
@@ -59,6 +73,7 @@ export class ConditionBuilderComponent implements OnInit {
     remove = new Command({
         execute: () => {
             const current = this.nodeService.current;
+
             if (current.id === '#logical' && current.level === 1) {
                 current.clear();
             } else {
@@ -66,6 +81,8 @@ export class ConditionBuilderComponent implements OnInit {
                 this.nodeService.current = previous;
                 current.remove();
             }
+
+            this.nodeService.currentChange.emit();
         },
         canExecute: () => {
             const current = this.nodeService.current;
@@ -75,9 +92,11 @@ export class ConditionBuilderComponent implements OnInit {
 
     load = new Command<ISerializationNode, boolean>({
         execute: node => {
+            this.cdr.markForCheck();
+
             const serializer = new SerializationService();
-            this.node = serializer.deserialize(this.plan, node);
-            this.nodeService.current = this.node.children[0];
+            this.root = serializer.deserialize(this.plan, node);
+            this.nodeService.current = this.root.children[0];
             return true;
         },
         canExecute: node => !!node
@@ -85,8 +104,10 @@ export class ConditionBuilderComponent implements OnInit {
 
     save = new Command<any, { node: ISerializationNode, expression: IExpression }>({
         execute: () => {
+            this.cdr.markForCheck();
+
             const serializer = new SerializationService();
-            const node = serializer.serialize(this.node);
+            const node = serializer.serialize(this.root);
             const expression = convert(node);
             return {
                 node,
@@ -94,7 +115,7 @@ export class ConditionBuilderComponent implements OnInit {
             };
         },
         canExecute: () => {
-            const depth = this.traverse.depth(this.node);
+            const depth = this.traverse.depth(this.root);
             return depth((memo, expression, line, node) =>
                 node.attr('placeholder')
                     ? memo
@@ -105,22 +126,25 @@ export class ConditionBuilderComponent implements OnInit {
 
     reset = new Command({
         execute: () => {
+            this.cdr.markForCheck();
+
             const schema = new WhereSchema(this.model);
             const plan = schema.factory();
-            this.node = plan.apply();
+            this.root = plan.apply();
 
-            const root = this.node.children[0];
+            const root = this.root.children[0];
             root.clear();
 
-            this.nodeService.current = this.node.children[0];
+            this.nodeService.current = this.root.children[0];
         }
     });
 
     constructor(
+        private cdr: ChangeDetectorRef,
         private element: ElementRef,
         private nodeService: EbNodeService,
-        private theme: ThemeService) {
-
+        private theme: ThemeService,
+    ) {
         this.initTheme();
     }
 
@@ -152,8 +176,8 @@ export class ConditionBuilderComponent implements OnInit {
 
         const schema = new WhereSchema(this.model);
         this.plan = schema.factory() as any;
-        this.node = this.plan.apply();
-        this.nodeService.current = this.node.children[0];
+        this.root = this.plan.apply();
+        this.nodeService.current = this.root.children[0];
     }
 
     private findLogicalNode(node: Node) {
